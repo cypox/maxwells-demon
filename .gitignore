@@ -1,0 +1,6 @@
+# Ignore cmake bulid files
+CMakeFiles
+*.cmake
+CMakeCache.txt
+Makefile
+
