@@ -1,12 +1,13 @@
 #pragma once
 
-#include "system.h"
-
 #include <cmath>
 #include <sys/time.h>
 #include <iomanip>
 #include <sstream>
+
 #include <SFML/Graphics.hpp>
+
+#include "system.h"
 
 
 char* get_time()
@@ -101,16 +102,14 @@ public:
   void draw_particle(particle& p)
   {
     double x(p._x), y(p._y);
-    int size = 20;
+    int radius = p._r;
 
-    sf::CircleShape shape(size);
+    sf::CircleShape shape(radius);
     shape.setFillColor(sf::Color(10, 10, 250));
     shape.setOutlineThickness(1);
     shape.setOutlineColor(sf::Color(250, 150, 100));
 
-    //float rel_x = m_window.getSize().x * (x + 10.0) / 20.0 - size / 2.;
-    //float rel_y = m_window.getSize().y * (y + 10.0) / 20.0 - size / 2.;
-    shape.setPosition(x - size/2., y - size/2.);
+    shape.setPosition(x - radius, y - radius);
 
     m_window.draw(shape);
   }
@@ -129,8 +128,25 @@ public:
     const std::vector<particle>& ps = m_world.get_particles();
     for (auto p : ps)
     {
-      //double xpos = p._x * ();
-      //if (_cursor_pos.x)
+      double xmin = p._x - p._r;
+      double xmax = p._x + p._r;
+      double ymin = p._y - p._r;
+      double ymax = p._y + p._r;
+      if (_cursor_pos.x >= xmin && _cursor_pos.x <= xmax && _cursor_pos.y >= ymin && _cursor_pos.y <= ymax)
+      {
+        std::stringstream ss;
+        ss << p._x << " " << p._y << "\n" << p._xv << " " << p._yv;
+        sf::Text text;
+        text.setFont(m_font);
+        sf::String debug_info;
+        debug_info += ss.str();
+        text.setString(debug_info);
+        text.setCharacterSize(20);
+        text.setFillColor(sf::Color::Red);
+        text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+        text.setPosition(_cursor_pos.x, _cursor_pos.y);
+        m_window.draw(text);
+      }
     }
   }
 

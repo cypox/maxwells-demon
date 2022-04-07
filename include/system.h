@@ -17,6 +17,7 @@ public:
     _xmax = width;
     _ymin = 0.;
     _ymax = height;
+    double radius = 20.;
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> xdist(_xmin, _xmax);
@@ -28,7 +29,7 @@ public:
       double y = ydist(mt);
       double xv = vdist(mt);
       double yv = vdist(mt);
-      _p.emplace_back(x, y, xv, yv);
+      _p.emplace_back(x, y, xv, yv, radius);
     }
   }
 
