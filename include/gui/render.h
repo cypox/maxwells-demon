@@ -49,6 +49,7 @@ public:
       handle_events();
       m_window.clear();
       render_world();
+      render_cursor();
       m_window.display();
     }
   }
@@ -86,6 +87,10 @@ public:
               break;
           }
           break;
+        
+        case sf::Event::MouseMoved:
+          _cursor_pos = sf::Mouse::getPosition(m_window);
+          break;
 
         default:
           break;
@@ -103,9 +108,9 @@ public:
     shape.setOutlineThickness(1);
     shape.setOutlineColor(sf::Color(250, 150, 100));
 
-    float rel_x = m_window.getSize().x * (x + 10.0) / 20.0 - size / 2.;
-    float rel_y = m_window.getSize().y * (y + 10.0) / 20.0 - size / 2.;
-    shape.setPosition(rel_x, rel_y);
+    //float rel_x = m_window.getSize().x * (x + 10.0) / 20.0 - size / 2.;
+    //float rel_y = m_window.getSize().y * (y + 10.0) / 20.0 - size / 2.;
+    shape.setPosition(x - size/2., y - size/2.);
 
     m_window.draw(shape);
   }
@@ -116,6 +121,16 @@ public:
     for (auto p : ps)
     {
       draw_particle(p);
+    }
+  }
+
+  void render_cursor()
+  {
+    const std::vector<particle>& ps = m_world.get_particles();
+    for (auto p : ps)
+    {
+      //double xpos = p._x * ();
+      //if (_cursor_pos.x)
     }
   }
 
@@ -130,6 +145,7 @@ public:
   }
 
 private:
+  sf::Vector2i _cursor_pos;
   sf::RenderWindow& m_window;
   const particle_system& m_world;
   sf::Font m_font;

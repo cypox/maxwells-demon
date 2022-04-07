@@ -9,19 +9,25 @@
 
 class particle_system {
 public:
-  particle_system(int n, double dt)
+  particle_system(int n, double dt, int width, int height)
   {
     _dt = dt;
     _running = true;
+    _xmin = 0.;
+    _xmax = width;
+    _ymin = 0.;
+    _ymax = height;
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_real_distribution<double> dist(-10.0, 10.0);
+    std::uniform_real_distribution<double> xdist(_xmin, _xmax);
+    std::uniform_real_distribution<double> ydist(_ymin, _ymax);
+    std::uniform_real_distribution<double> vdist(-10., 10.);
     for (int i = 0 ; i < n ; ++ i)
     {
-      double x = dist(mt);
-      double y = dist(mt);
-      double xv = dist(mt);
-      double yv = dist(mt);
+      double x = xdist(mt);
+      double y = ydist(mt);
+      double xv = vdist(mt);
+      double yv = vdist(mt);
       _p.emplace_back(x, y, xv, yv);
     }
   }
@@ -36,24 +42,24 @@ public:
         p._y += _dt * p._yv;
 
         /* avoid wall collision */
-        if (p._x > 10.0)
+        if (p._x > _xmax)
         {
-          p._x -= 2*(p._x - 10.);
+          p._x -= 2*(p._x - _xmax);
           p._xv = -p._xv;
         }
-        else if (p._x < -10.0)
+        else if (p._x < _xmin)
         {
-          p._x -= 2*(p._x + 10.);
+          p._x -= 2*(p._x - _xmin);
           p._xv = -p._xv;
         }
-        if (p._y > 10.0)
+        if (p._y > _ymax)
         {
-          p._y -= 2*(p._y - 10.);
+          p._y -= 2*(p._y - _ymax);
           p._yv = -p._yv;
         }
-        else if (p._y < -10.0)
+        else if (p._y < _ymin)
         {
-          p._y -= 2*(p._y + 10.);
+          p._y -= 2*(p._y - _ymin);
           p._yv = -p._yv;
         }
       }
@@ -81,6 +87,10 @@ public:
   }
 
 private:
+  double _xmin;
+  double _xmax;
+  double _ymin;
+  double _ymax;
   mutable std::atomic<bool> _running;
   double _dt;
   std::vector<particle> _p;
