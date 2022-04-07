@@ -77,6 +77,10 @@ public:
             case sf::Keyboard::Q:
               m_window.close();
             case sf::Keyboard::P:
+              if (m_world.is_running())
+                m_world.pause_simulation();
+              else
+                m_world.resume_simulation();
               break;
             case sf::Keyboard::T:
               break;
