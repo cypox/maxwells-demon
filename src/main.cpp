@@ -2,21 +2,28 @@
 
 #include <SFML/Window.hpp>
 
+#include "system.h"
+#include "gui/render.h"
+
 
 int main(int argc, char** argv)
 {
   std::cout << "maxwell demon game" << std::endl;
 
-  sf::Window window(sf::VideoMode(800, 600), "Maxwell's Demon Game");
+  particle_system world(10);
+
+  sf::RenderWindow window(sf::VideoMode(1500, 900), "Maxwell's Demon Game");
+  window.setFramerateLimit(60);
+
+  render renderer(window, world);
+
+  sf::Thread thread(&render::run, &renderer);
+  thread.launch();
 
   while (window.isOpen())
   {
-    sf::Event event;
-    while (window.pollEvent(event))
-    {
-      if (event.type == sf::Event::Closed)
-        window.close();
-    }
+    window.setActive(false);
+    world.step();
   }
 
   return 0;
