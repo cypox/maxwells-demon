@@ -78,6 +78,7 @@ public:
               break;
             case sf::Keyboard::Q:
               m_window.close();
+            case sf::Keyboard::Space:
             case sf::Keyboard::P:
               if (m_world.is_running())
                 m_world.pause_simulation();
@@ -135,29 +136,18 @@ public:
       if (_cursor_pos.x >= xmin && _cursor_pos.x <= xmax && _cursor_pos.y >= ymin && _cursor_pos.y <= ymax)
       {
         std::stringstream ss;
-        ss << p._x << " " << p._y << "\n" << p._xv << " " << p._yv;
+        ss << std::fixed << std::setprecision(2) << p._x << " " << p._y << "\n" << p._xv << " " << p._yv;
         sf::Text text;
         text.setFont(m_font);
         sf::String debug_info;
         debug_info += ss.str();
         text.setString(debug_info);
-        text.setCharacterSize(20);
-        text.setFillColor(sf::Color::Red);
-        text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-        text.setPosition(_cursor_pos.x, _cursor_pos.y);
+        text.setCharacterSize(14);
+        text.setFillColor(sf::Color::White);
+        text.setPosition(_cursor_pos.x + 10, _cursor_pos.y + 10);
         m_window.draw(text);
       }
     }
-  }
-
-  void draw_background(sf::FloatRect area, sf::Color outline, sf::Color fill = sf::Color::Transparent)
-  {
-    sf::RectangleShape background(sf::Vector2f(area.width, area.height));
-    background.setPosition(area.left, area.top);
-    background.setOutlineThickness(2);
-    background.setOutlineColor(outline);
-    background.setFillColor(fill);
-    m_window.draw(background);
   }
 
 private:
