@@ -27,6 +27,11 @@ public:
   {
   }
 
+  const std::vector<particle>& get_particles() const
+  {
+    return _p;
+  }
+
 private:
   std::vector<particle> _p;
 };

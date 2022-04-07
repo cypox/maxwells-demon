@@ -89,8 +89,25 @@ public:
     }
   }
 
+  void draw(double x, double y, double xv, double yv)
+  {
+    sf::CircleShape shape(20);
+    shape.setFillColor(sf::Color(10, 10, 250));
+    shape.setOutlineThickness(1);
+    shape.setOutlineColor(sf::Color(250, 150, 100));
+    float rel_x = m_window.getSize().x * (x + 10.0) / 20.0;
+    float rel_y = m_window.getSize().y * (y + 10.0) / 20.0;
+    shape.setPosition(rel_x, rel_y);
+    m_window.draw(shape);
+  }
+
   void render_world()
   {
+    const std::vector<particle>& ps = m_world.get_particles();
+    for (auto p : ps)
+    {
+      draw(p._x, p._y, p._xv, p._yv);
+    }
   }
 
   void draw_background(sf::FloatRect area, sf::Color outline, sf::Color fill = sf::Color::Transparent)

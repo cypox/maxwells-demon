@@ -15,7 +15,7 @@ public:
 
   particle(double x, double y, double xv, double yv) : _x(x), _y(y), _xv(xv), _yv(yv) {}
 
-private:
+//private:
   double _x;
   double _y;
   double _xv;
