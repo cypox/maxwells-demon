@@ -89,15 +89,20 @@ public:
     }
   }
 
-  void draw(double x, double y, double xv, double yv)
+  void draw_particle(particle& p)
   {
-    sf::CircleShape shape(20);
+    double x(p._x), y(p._y);
+    int size = 20;
+
+    sf::CircleShape shape(size);
     shape.setFillColor(sf::Color(10, 10, 250));
     shape.setOutlineThickness(1);
     shape.setOutlineColor(sf::Color(250, 150, 100));
-    float rel_x = m_window.getSize().x * (x + 10.0) / 20.0;
-    float rel_y = m_window.getSize().y * (y + 10.0) / 20.0;
+
+    float rel_x = m_window.getSize().x * (x + 10.0) / 20.0 - size / 2.;
+    float rel_y = m_window.getSize().y * (y + 10.0) / 20.0 - size / 2.;
     shape.setPosition(rel_x, rel_y);
+
     m_window.draw(shape);
   }
 
@@ -106,7 +111,7 @@ public:
     const std::vector<particle>& ps = m_world.get_particles();
     for (auto p : ps)
     {
-      draw(p._x, p._y, p._xv, p._yv);
+      draw_particle(p);
     }
   }
 
