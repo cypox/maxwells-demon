@@ -4,3 +4,6 @@ CMakeFiles
 CMakeCache.txt
 Makefile
 *.bin
+
+# Ignore vscode files
+.vscode
