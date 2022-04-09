@@ -14,6 +14,8 @@ public:
   {
     _dt = dt;
     _running = true;
+    _barrier = false;
+    _barrier_length = 100.;
     _xmin = 0.;
     _xmax = width;
     _ymin = 0.;
@@ -30,7 +32,7 @@ public:
       double y = ydist(mt);
       double xv = vdist(mt);
       double yv = vdist(mt);
-      _p.emplace_back(x, y, xv, yv, radius);
+      _p.emplace_back(x, y, xv, yv, radius, (i < n/2) ? 0 : 1);
     }
   }
 
@@ -56,27 +58,49 @@ public:
         /* border collision */
         if ((p._x+p._r) > _xmax)
         {
-          p._x -= 2*(p._x+p._r - _xmax);
+          p._x -= 2.*(p._x+p._r - _xmax);
           p._xv = -p._xv;
         }
         else if ((p._x-p._r) < _xmin)
         {
-          p._x -= 2*(p._x-p._r - _xmin);
+          p._x -= 2.*(p._x-p._r - _xmin);
           p._xv = -p._xv;
         }
         if ((p._y+p._r) > _ymax)
         {
-          p._y -= 2*(p._y+p._r - _ymax);
+          p._y -= 2.*(p._y+p._r - _ymax);
           p._yv = -p._yv;
         }
         else if ((p._y-p._r) < _ymin)
         {
-          p._y -= 2*(p._y-p._r - _ymin);
+          p._y -= 2.*(p._y-p._r - _ymin);
           p._yv = -p._yv;
         }
 
         /* middle line collision */
-
+        double barrier_start = (_ymax - _barrier_length) / 2.;
+        double barrier_end = (_ymax + _barrier_length) / 2.;
+        if (!_barrier && p._y > barrier_start && p._y < barrier_end)
+        {
+          continue;
+        }
+        double x_middle = _xmin + (_xmax - _xmin)/2.;
+        if (p._xv > 0.)
+        {
+          if (std::abs(p._x - x_middle) <= p._r)
+          {
+            p._x -= 2.*(p._x+p._r - x_middle);
+            p._xv = -p._xv;
+          }
+        }
+        else if (p._xv < 0.)
+        {
+          if (std::abs(p._x - x_middle) <= p._r)
+          {
+            p._x -= 2.*(p._x-p._r - x_middle);
+            p._xv = -p._xv;
+          }
+        }
       }
 
       /* avoid particle collisions */
@@ -120,12 +144,24 @@ public:
     _running = true;
   }
 
+  void open_barrier() const
+  {
+    _barrier = false;
+  }
+
+  void close_barrier() const
+  {
+    _barrier = true;
+  }
+
 private:
   double _xmin;
   double _xmax;
   double _ymin;
   double _ymax;
+  double _barrier_length;
   mutable std::atomic<bool> _running;
+  mutable std::atomic<bool> _barrier;
   double _dt;
   std::vector<particle> _p;
 };

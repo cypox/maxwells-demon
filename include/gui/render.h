@@ -106,7 +106,10 @@ public:
     int radius = p._r;
 
     sf::CircleShape shape(radius);
-    shape.setFillColor(sf::Color(10, 10, 250));
+    if (p._t)
+      shape.setFillColor(sf::Color(10, 10, 250));
+    else
+      shape.setFillColor(sf::Color(250, 10, 10));
     shape.setOutlineThickness(1);
     shape.setOutlineColor(sf::Color(250, 150, 100));
 

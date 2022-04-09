@@ -3,7 +3,7 @@
 
 class particle {
 public:
-  particle() : _x(0.), _y(0.), _xv(0.), _yv(0.), _r(10) {}
+  particle() : _x(0.), _y(0.), _xv(0.), _yv(0.), _r(10), _t(0) {}
 
   /* WARNING: -- no radius (_r) instantiation
   particle(double *f())
@@ -15,7 +15,7 @@ public:
   }
   */
 
-  particle(double x, double y, double xv, double yv, int r) : _x(x), _y(y), _xv(xv), _yv(yv), _r(r) {}
+  particle(double x, double y, double xv, double yv, int r, int t) : _x(x), _y(y), _xv(xv), _yv(yv), _r(r), _t(t) {}
 
 //private:
   double _x;
@@ -23,4 +23,5 @@ public:
   double _xv;
   double _yv;
   int _r;
+  int _t;
 };
