@@ -53,27 +53,30 @@ public:
         p._x += _dt * p._xv;
         p._y += _dt * p._yv;
 
-        /* avoid wall collision */
-        if (p._x > _xmax)
+        /* border collision */
+        if ((p._x+p._r) > _xmax)
         {
-          p._x -= 2*(p._x - _xmax);
+          p._x -= 2*(p._x+p._r - _xmax);
           p._xv = -p._xv;
         }
-        else if (p._x < _xmin)
+        else if ((p._x-p._r) < _xmin)
         {
-          p._x -= 2*(p._x - _xmin);
+          p._x -= 2*(p._x-p._r - _xmin);
           p._xv = -p._xv;
         }
-        if (p._y > _ymax)
+        if ((p._y+p._r) > _ymax)
         {
-          p._y -= 2*(p._y - _ymax);
+          p._y -= 2*(p._y+p._r - _ymax);
           p._yv = -p._yv;
         }
-        else if (p._y < _ymin)
+        else if ((p._y-p._r) < _ymin)
         {
-          p._y -= 2*(p._y - _ymin);
+          p._y -= 2*(p._y-p._r - _ymin);
           p._yv = -p._yv;
         }
+
+        /* middle line collision */
+
       }
 
       /* avoid particle collisions */
