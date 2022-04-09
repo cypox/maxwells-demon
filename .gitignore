@@ -7,3 +7,7 @@ Makefile
 
 # Ignore vscode files
 .vscode
+
+# Ignore valgrind files
+cachegrind*
+callgrind*
