@@ -50,6 +50,7 @@ public:
       handle_events();
       m_window.clear();
       render_world();
+      render_barrier();
       render_cursor();
       m_window.display();
     }
@@ -74,7 +75,8 @@ public:
         case sf::Event::KeyPressed:
           switch (event.key.code)
           {
-            case sf::Keyboard::S:
+            case sf::Keyboard::O:
+              m_world.open_barrier();
               break;
             case sf::Keyboard::Q:
               m_window.close();
@@ -87,9 +89,21 @@ public:
               break;
             case sf::Keyboard::T:
               break;
+            default:
+              break;
           }
           break;
         
+        case sf::Event::KeyReleased:
+          switch (event.key.code)
+          {
+            case sf::Keyboard::O:
+              m_world.close_barrier();
+              break;
+            default:
+              break;
+          }
+
         case sf::Event::MouseMoved:
           _cursor_pos = sf::Mouse::getPosition(m_window);
           break;
@@ -125,6 +139,34 @@ public:
     {
       draw_particle(p);
     }
+  }
+
+  void render_barrier()
+  {
+    double xs, xe, ys, ye;
+    std::tie(xs, ys) = m_world.get_barrier_start();
+    std::tie(xe, ye) = m_world.get_barrier_end();
+
+    sf::VertexArray lines(sf::LinesStrip, 2);
+    // first segment
+    lines[0].position = sf::Vector2f(xs, 0);
+    lines[1].position = sf::Vector2f(xs, ys);
+    m_window.draw(lines);
+
+    // last segment
+    lines[0].position = sf::Vector2f(xs, ye);
+    lines[1].position = sf::Vector2f(xs, m_world.get_ymax());
+    m_window.draw(lines);
+
+    // middle segment
+    lines[0].position = sf::Vector2f(xs, ys);
+    lines[1].position = sf::Vector2f(xs, ye);
+    if (m_world.is_barrier_open())
+    {
+      lines[0].color = sf::Color::Black;
+      lines[1].color = sf::Color::Black;
+    }
+    m_window.draw(lines);
   }
 
   void render_cursor()

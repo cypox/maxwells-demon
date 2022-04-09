@@ -14,7 +14,7 @@ public:
   {
     _dt = dt;
     _running = true;
-    _barrier = false;
+    _barrier = true;
     _barrier_length = 100.;
     _xmin = 0.;
     _xmax = width;
@@ -127,6 +127,26 @@ public:
   const std::vector<particle>& get_particles() const
   {
     return _p;
+  }
+
+  std::pair<double, double> get_barrier_start() const
+  {
+    return {(_xmax-_xmin) / 2., (_ymax - _barrier_length) / 2.};
+  }
+
+  std::pair<double, double> get_barrier_end() const
+  {
+    return {(_xmax-_xmin) / 2., (_ymax + _barrier_length) / 2.};
+  }
+
+  double get_ymax() const
+  {
+    return _ymax;
+  }
+
+  double is_barrier_open() const
+  {
+    return !_barrier;
   }
 
   bool is_running() const
