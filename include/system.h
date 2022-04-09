@@ -1,5 +1,6 @@
 #pragma once
 
+#include <math.h>
 #include <vector>
 #include <random>
 #include <atomic>
@@ -33,12 +34,22 @@ public:
     }
   }
 
+  double distance(double x1, double y1, double x2, double y2)
+  {
+    double a1 = (x2 - x1);
+    double b1 = (y2 - y1);
+    a1 *= a1;
+    b1 *= b1;
+    return std::sqrt(a1 + b1);
+  }
+
   void step()
   {
     if (_running)
     {
-      for (auto& p : _p)
+      for (int i = 0 ; i < _p.size() ; ++ i)
       {
+        particle& p = _p[i];
         p._x += _dt * p._xv;
         p._y += _dt * p._yv;
 
@@ -62,6 +73,25 @@ public:
         {
           p._y -= 2*(p._y - _ymin);
           p._yv = -p._yv;
+        }
+      }
+
+      /* avoid particle collisions */
+      /* TODO: BVH, Grid or Octree */
+      for (int i = 0 ; i < _p.size() ; ++ i)
+      {
+        particle& p = _p[i];
+        for (int j = i+1 ; j < _p.size() ; ++ j)
+        {
+          if (i != j)
+          {
+            particle& q = _p[j];
+            if (distance(p._x, p._y, q._x, q._y) <= (p._r + q._r)) // i and j are colliding
+            {
+              std::swap(p._xv, q._xv);
+              std::swap(p._yv, q._yv);
+            }
+          }
         }
       }
     }
