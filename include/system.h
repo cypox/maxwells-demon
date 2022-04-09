@@ -15,7 +15,7 @@ public:
     _dt = dt;
     _running = true;
     _barrier = true;
-    _barrier_length = 100.;
+    _barrier_length = 200.;
     _xmin = 0.;
     _xmax = width;
     _ymin = 0.;
