@@ -8,6 +8,15 @@
 #include "particle.h"
 
 
+double distance(double x1, double y1, double x2, double y2)
+{
+  double a1 = (x2 - x1);
+  double b1 = (y2 - y1);
+  a1 *= a1;
+  b1 *= b1;
+  return std::sqrt(a1 + b1);
+}
+
 class particle_system {
 public:
   particle_system(int n, double dt, int width, int height)
@@ -34,15 +43,6 @@ public:
       double yv = vdist(mt);
       _p.emplace_back(x, y, xv, yv, radius, (i < n/2) ? 0 : 1);
     }
-  }
-
-  double distance(double x1, double y1, double x2, double y2)
-  {
-    double a1 = (x2 - x1);
-    double b1 = (y2 - y1);
-    a1 *= a1;
-    b1 *= b1;
-    return std::sqrt(a1 + b1);
   }
 
   void step()
