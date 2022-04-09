@@ -7,3 +7,8 @@ Allows you to play as Maxwell's demon and try to restore order to a system!
 ```bash
 cmake . -DCMAKE_BUILD_TYPE=Debug
 ```
+
+# TODO
+
+Add AI:
+* AI checks if trajectory will pass through and open barrier
