@@ -1,4 +1,4 @@
-set(UNIT_TESTS main.cpp)
+set(UNIT_TESTS main.cpp include/system_test.cpp)
 
 add_executable(unit_tests.bin ${UNIT_TESTS})
 
