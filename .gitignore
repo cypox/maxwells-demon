@@ -11,3 +11,7 @@ Makefile
 # Ignore valgrind files
 cachegrind*
 callgrind*
+
+# Ignore gtest libs
+lib
+_deps
