@@ -12,3 +12,5 @@ cmake . -DCMAKE_BUILD_TYPE=Debug
 
 Add AI:
 * AI checks if trajectory will pass through and open barrier
+* Boltzmann's entropy formula to calculate evolution of entropy
+* Energy conservation verification (step function unittest)
